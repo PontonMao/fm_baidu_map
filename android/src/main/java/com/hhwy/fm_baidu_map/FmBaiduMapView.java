@@ -178,7 +178,7 @@ public class FmBaiduMapView{
     FmBaiduMapView(String name,PluginRegistry.Registrar registrar, FmBaiduMapViewFactory factory){
         _registrar = registrar;
         _ftb = new FmToolsBase(this, name, registrar);
-        _view=new TextureMapView(registrar.activity());
+        _view=new TextureMapView(registrar.activity(), baiduMapOptions);
         _bmp = _view.getMap();
         _bmp.setMyLocationEnabled(true);
         _factory = factory;
@@ -739,6 +739,19 @@ public class FmBaiduMapView{
             e.printStackTrace();
         }
     }
+
+    /**
+     * 设置是否允许所有手势操作
+     * @param obj
+     */
+    private void setAllGesturesEnabled(final JSONObject obj) {
+        try {
+            _bmp.getUiSettings().setAllGesturesEnabled(obj.getBoolean("enabled"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 销毁
      */

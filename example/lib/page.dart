@@ -128,6 +128,12 @@ class _PageTestState extends State<PageTest> {
                       _cj.sure();
                     },
                   ),
+                  OutlineButton(
+                    child: Text("禁止手势"),
+                    onPressed: () {
+                      _controller.drawer.setAllGesturesEnabled(false);
+                    },
+                  ),
                   // OutlineButton(
                   //   child: Text("多页面"),
                   //   onPressed: () {

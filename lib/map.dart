@@ -257,4 +257,12 @@ class FmBaiduMap {
       },
     );
   }
+
+  /*
+   * 设置是否允许所有手势操作（暂只支持Android）
+   */
+  Future setAllGesturesEnabled(bool enabled) async {
+    Map m = {"enabled": enabled};
+    await _eventChannel.invokeMethod("setAllGesturesEnabled", m);
+  }
 }
