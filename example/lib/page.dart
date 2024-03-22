@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fm_fit/fm_fit.dart';
 import './bsmap_cj_controller.dart';
 import './line_cj.dart';
 import './cj_base.dart';
 import './cj_pole.dart';
 import 'dart:convert';
+import 'package:fm_baidu_map/over_types/mark.dart';
 
 class PageTest extends StatefulWidget {
   @override
@@ -35,7 +37,7 @@ class _PageTestState extends State<PageTest> {
           children: <Widget>[
             Expanded(child: BsMapCJLine(controller: _controller)),
             Container(
-              height: 100,
+              height: 150,
               child: Wrap(
                 children: <Widget>[
                   OutlineButton(
@@ -132,6 +134,48 @@ class _PageTestState extends State<PageTest> {
                     child: Text("禁止手势"),
                     onPressed: () {
                       _controller.drawer.setAllGesturesEnabled(false);
+                    },
+                  ),
+                  OutlineButton(
+                    child: Text("区镇Marker蓝"),
+                    onPressed: () async {
+                      FmMapOverlaysMark item = await _controller.drawer
+                          .addOverlay(FmMapOverlaysMark(
+                          point: _controller.centerPoint,
+                          textSize: fit.t(100).ceil(),
+                          textColor: 0xFFFFFFFF,
+                          title: "区镇",
+                          icon: "lib/images/blue_circle.png",
+                          text: "江海区\n1252套",
+                          zIndex: 10));
+                    },
+                  ),
+                  OutlineButton(
+                    child: Text("区镇Marker黄"),
+                    onPressed: () async {
+                      FmMapOverlaysMark item = await _controller.drawer
+                          .addOverlay(FmMapOverlaysMark(
+                          point: _controller.centerPoint,
+                          textSize: fit.t(100).ceil(),
+                          textColor: 0xFFFFFFFF,
+                          title: "区镇",
+                          icon: "lib/images/yellow_circle.png",
+                          text: "新会区\n1252套",
+                          zIndex: 10));
+                    },
+                  ),
+                  OutlineButton(
+                    child: Text("小区Marker"),
+                    onPressed: () async {
+                      FmMapOverlaysMark item = await _controller.drawer
+                          .addOverlay(FmMapOverlaysMark(
+                          point: _controller.centerPoint,
+                          textSize: fit.t(80).ceil(),
+                          textColor: 0xFFFFFFFF,
+                          title: "小区",
+                          icon: "lib/images/xiaoqu_bg.png",
+                          text: "江门市蓬江区... 80套",
+                          zIndex: 10));
                     },
                   ),
                   // OutlineButton(

@@ -5,7 +5,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.text.Layout.Alignment;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,28 +123,53 @@ public class FmToolsBase {
         return dstbmp;
     }
     public static Bitmap textBitmap(Bitmap bitmap, String text, float textSize, int textColor) {
+        return textBitmap(bitmap, text, textSize, textColor, "");
+    }
+
+    public static Bitmap textBitmap(Bitmap bitmap, String text, float textSize, int textColor, String key) {
         if (bitmap != null && !text.isEmpty()) {
             Bitmap temp = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(),
                     Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(temp);
             canvas.drawBitmap(bitmap, 0, 0, null);
-            Paint paint = new Paint();
-            if ( textSize > 0 ) {
-                paint.setTextSize(textSize);
-            }
-            paint.setTextAlign(Paint.Align.CENTER);
-            paint.setColor(textColor);
-            Rect rect = new Rect();
-            paint.getTextBounds(text, 0, text.length(), rect);
+            if (key.contains("blue_circle") || key.contains("yellow_circle") || key.contains("xiaoqu_bg")) {
+                TextPaint tp = new TextPaint();
+                tp.setColor(textColor);
+                tp.setStyle(Style.FILL);
+                if ( textSize > 0 ) {
+                    tp.setTextSize(textSize);
+                }
+                StaticLayout myStaticLayout = new StaticLayout(text, tp, canvas.getWidth(), Alignment.ALIGN_CENTER, 1.0f, 0.0f, false);
+                // StaticLayout默认从（0，0）点开始绘制
+                // 如果需要调整位置，只能在绘制之前移动Canvas的起始坐标
+                if (text.contains("\n")) {
+                    canvas.translate((canvas.getWidth() / 2) - (myStaticLayout.getWidth() / 2),
+                            (canvas.getHeight() / 2) - ((myStaticLayout.getHeight() / 2)));
+                } else {
+                    canvas.translate((canvas.getWidth() / 2) - (myStaticLayout.getWidth() / 2),
+                            (canvas.getHeight() / 3) - ((myStaticLayout.getHeight() / 3)));
+                }
+                myStaticLayout.draw(canvas);
+            } else {
+                Paint paint = new Paint();
+                if ( textSize > 0 ) {
+                    paint.setTextSize(textSize);
+                }
+                paint.setTextAlign(Paint.Align.CENTER);
+                paint.setColor(textColor);
+                Rect rect = new Rect();
+                paint.getTextBounds(text, 0, text.length(), rect);
 //            float x = (bitmap.getWidth() - rect.width()) / 2f-1.0f;
-            float y = (bitmap.getHeight() + rect.height()) / 2f-1.0f;
+                float y = (bitmap.getHeight() + rect.height()) / 2f-1.0f;
 //            canvas.drawText(text, x, y, paint);
-            canvas.drawText(text, bitmap.getWidth()/2.0f-1.0f, y, paint);
+                canvas.drawText(text, bitmap.getWidth()/2.0f-1.0f, y, paint);
+            }
             bitmap.recycle();
             return temp;
         }
         return bitmap;
     }
+
     public HashMap JsonObject2HashMap(JSONObject jo) {
         HashMap<String,Object> hm = new HashMap<>();
         for (Iterator<String> keys = jo.keys(); keys.hasNext();) {

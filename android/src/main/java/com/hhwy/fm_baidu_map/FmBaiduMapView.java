@@ -572,7 +572,7 @@ public class FmBaiduMapView{
                     if ( obj.has("textColor")){
                         textColor = obj.getInt("textColor");
                     }
-                    bitmap = _ftb.textBitmap(bitmap,obj.getString("text"),textSize, textColor);
+                    bitmap = _ftb.textBitmap(bitmap,obj.getString("text"),textSize, textColor, key);
                 }
                 mk.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
                 if ( obj.has("draggable") ){
