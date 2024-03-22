@@ -374,12 +374,14 @@ public class FmBaiduMapView{
             // 先取图层
             if ( obj.has("layer") ){
                 FmOverlay item = _overlays.get(obj.getString("layer"));
-                // 无id时，删除所有图层元素
-                if ( obj.has("id")){
-                    item.remove(obj.getString("id"));
-                }else{
-                    item.removeAll();
-                    _overlays.remove(obj.getString("layer"));
+                if (item != null) {
+                    // 无id时，删除所有图层元素
+                    if ( obj.has("id")){
+                        item.remove(obj.getString("id"));
+                    }else{
+                        item.removeAll();
+                        _overlays.remove(obj.getString("layer"));
+                    }
                 }
             }else{
                 if ( !obj.has("id")) {
