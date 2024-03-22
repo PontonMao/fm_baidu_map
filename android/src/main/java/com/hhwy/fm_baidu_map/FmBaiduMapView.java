@@ -32,6 +32,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +55,7 @@ public class FmBaiduMapView{
     private BaiduMap _bmp;
     private final FmBaiduMapViewFactory _factory;
     private final HashMap<String, FmOverlay>_overlays = new HashMap<>();
+    private Handler uiThreadHandler = new Handler(Looper.getMainLooper());
     class FmOverlayItem{
         Overlay overlay;
         String id;
@@ -236,7 +239,9 @@ public class FmBaiduMapView{
         m.put("rotate",mapStatus.rotate);
         m.put("screenX",mapStatus.targetScreen.x);
         m.put("screenY",mapStatus.targetScreen.y);
-        _ftb.invokeMethod(name,m);
+        uiThreadHandler.post(()->{
+            _ftb.invokeMethod(name,m);
+        });
     }
 
     /**
